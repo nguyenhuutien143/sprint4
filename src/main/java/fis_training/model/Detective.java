@@ -1,7 +1,6 @@
 package fis_training.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import fis_training.core.EmploymentStatus;
 import fis_training.core.Rank;
 import lombok.EqualsAndHashCode;
@@ -13,7 +12,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "detective")
-
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Detective extends AbstractEntity {
     @OneToOne
     @JoinColumn(name = "person_id")
@@ -30,13 +31,16 @@ public class Detective extends AbstractEntity {
     @ManyToMany(mappedBy = "assigned")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonBackReference
+    @JsonBackReference(value = "criminalCase-detective")
+    @Transient
+//    @JsonIdentityReference(alwaysAsId = true)
     private Set<CriminalCase> criminalCaseSet;
     @OneToMany(mappedBy = "detective", cascade = CascadeType.ALL)
-    @JsonManagedReference
+//    @JsonManagedReference
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @Transient
+//    @JsonIdentityReference(alwaysAsId = true)
     private Set<TrackEntry> trackEntrySet;
 
     @Override

@@ -6,12 +6,10 @@ import fis_training.model.Detective;
 import java.util.List;
 import java.util.Optional;
 
-public interface DetectiveService {
+public interface DetectiveService extends AbstractService<Detective>{
     List<Detective> findAll();
     Optional<Detective> findByBadgeNumber(String badgeNumber);
     List<Detective> findbyRank(Rank rank);
 
-    default Optional<Detective> findByIdWithPersonDetails(Long id) {
-        return Optional.empty();
-    }
+
 }

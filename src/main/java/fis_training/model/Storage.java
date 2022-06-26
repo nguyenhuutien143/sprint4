@@ -27,7 +27,10 @@ SOFTWARE.
 */
 package fis_training.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -36,6 +39,9 @@ import java.util.HashSet;
 import java.util.Set;
 @Entity
 @Table(name = "storage")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Storage extends AbstractEntity {
     @Column(name = "name")
     private String name;
@@ -45,8 +51,9 @@ public class Storage extends AbstractEntity {
     @OneToMany(mappedBy = "storage",cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonManagedReference
+//    @JsonManagedReference
     @Transient
+//    @JsonIdentityReference(alwaysAsId = true)
     private Set<Evidence> evidenceSet = new HashSet<>();
 
     public Storage() {

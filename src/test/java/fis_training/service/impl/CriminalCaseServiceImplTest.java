@@ -3,7 +3,7 @@ package fis_training.service.impl;
 import fis_training.core.CaseStatus;
 import fis_training.core.CaseType;
 import fis_training.model.Detective;
-import fis_training.repo.jdpctemplate.JdbcDetectiveRepo;
+import fis_training.repo.DetectiveRepo;
 import fis_training.service.CriminalCaseService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class CriminalCaseServiceImplTest {
 @Autowired
 private CriminalCaseService criminalCaseService;
-private JdbcDetectiveRepo jdbcDetectiveRepo;
+private DetectiveRepo detectiveRepo;
     @Test
     void findByLeadInvestigator() {
-        Optional<Detective> detective= jdbcDetectiveRepo.findById(1L);
+        Optional<Detective> detective= detectiveRepo.findById(1L);
         assertEquals(2,criminalCaseService.findByLeadInvestigator(detective.get()).size());
     }
 
@@ -42,7 +42,7 @@ private JdbcDetectiveRepo jdbcDetectiveRepo;
 
     @Test
     void testFindByLeadInvestigator() {
-        Optional<Detective> detective= jdbcDetectiveRepo.findById(1L);
+        Optional<Detective> detective= detectiveRepo.findById(1L);
         assertEquals(1, criminalCaseService.findByLeadInvestigator(detective.get()).size());
     }
 

@@ -3,6 +3,8 @@ package fis_training.model;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import fis_training.core.TrackAction;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -13,18 +15,21 @@ import java.util.Objects;
 
 @Entity
 @Table(name="trackEntry")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class TrackEntry extends AbstractEntity{
     @Column
     private LocalDateTime date;
     @ManyToOne
     @JoinColumn(name = "evidence_id", nullable = false)
-    @JsonBackReference
+//    @JsonBackReference
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Evidence evidence;
     @ManyToOne
     @JoinColumn(name = "detective_id", nullable = false)
-    @JsonBackReference
+//    @JsonBackReference
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Detective detective;

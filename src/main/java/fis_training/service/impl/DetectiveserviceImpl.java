@@ -16,6 +16,35 @@ import java.util.stream.Collectors;
 public class DetectiveserviceImpl implements DetectiveService {
     @Autowired
     private DetectiveRepo detectiveRepo;
+
+    @Override
+    public void save(Detective detective) {
+        detectiveRepo.save(detective);
+    }
+
+    @Override
+    public void delete(Detective detective) {
+        detectiveRepo.delete(detective);
+    }
+
+    @Override
+    public Detective update(Detective detective) {
+        detectiveRepo.save(detective);
+        return detective;
+    }
+
+    @Override
+    public int deleteById(Long detectiveId) {
+        detectiveRepo.deleteById(detectiveId);
+        if(detectiveRepo.findById(detectiveId).isPresent()) return -1;
+        return 1;
+    }
+
+    @Override
+    public Optional<Detective> findById(Long detectiveId) {
+        return detectiveRepo.findById(detectiveId);
+    }
+
     @Override
     public List<Detective> findAll() {
         return detectiveRepo.findAll();

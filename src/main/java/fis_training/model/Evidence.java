@@ -1,7 +1,6 @@
 package fis_training.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -11,19 +10,23 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@ToString
 @Table(name = "evidence")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Evidence extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name="case_id", nullable = false)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonBackReference
+//    @JsonBackReference
     private CriminalCase criminalCase;
     @ManyToOne
     @JoinColumn(name = "storage_id", nullable = false)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonBackReference
+//    @JsonBackReference
     private Storage storage;
     @Column(name = "number", unique = true)
     private String number;
@@ -34,9 +37,11 @@ public class Evidence extends AbstractEntity {
     @Column(name = "archived")
     private boolean archived;
     @OneToMany(mappedBy = "evidence", cascade = CascadeType.ALL)
-    @JsonManagedReference
+//    @JsonManagedReference
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+//    @Transient
+//    @JsonIdentityReference(alwaysAsId = true)
     private Set<TrackEntry> trackEntries = new HashSet<>();
 
     public CriminalCase getCriminalCase() {
@@ -87,9 +92,22 @@ public class Evidence extends AbstractEntity {
         this.archived = archived;
     }
 
-    private void setTrackEntries(Set<TrackEntry> trackEntries) {
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
+    public void setTrackEntries(Set<TrackEntry> trackEntries) {
         this.trackEntries = trackEntries;
     }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+//    public Set<TrackEntry> getTrackEntries() {
+//        return trackEntries;
+//    }
+
 
     public boolean addTrackEntry(TrackEntry trackEntry){
         trackEntry.setEvidence(this);
@@ -106,6 +124,7 @@ public class Evidence extends AbstractEntity {
                 Objects.equals(number, evidence.number) &&
                 Objects.equals(itemName, evidence.itemName);
     }
+
 
     @Override
     public int hashCode() {

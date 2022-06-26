@@ -1,11 +1,19 @@
 package fis_training.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import fis_training.model.CriminalCase;
+import fis_training.model.Storage;
+import fis_training.model.TrackEntry;
 import lombok.*;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Getter
@@ -13,12 +21,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EvidenceDTO {
-    @NotEmpty
+
+    private CriminalCase criminalCase;
+
+    private Storage storage;
     private String number;
-    @NotEmpty
     private String itemName;
-    @NotEmpty
     private String notes;
-    @NotEmpty
     private boolean archived;
+    private Set<TrackEntry> trackEntries = new HashSet<>();
+
 }

@@ -10,7 +10,7 @@ import fis_training.model.Detective;
 import java.util.List;
 import java.util.Optional;
 
-public interface CriminalCaseService {
+public interface CriminalCaseService extends AbstractService<CriminalCase> {
     List<CriminalCase> findByLeadInvestigator(Detective detective);
     Optional<CriminalCase> findByNumber(String caseNumber);
     List<CriminalCase> findByStatus(CaseStatus status);

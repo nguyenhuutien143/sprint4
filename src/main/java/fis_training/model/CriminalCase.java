@@ -1,7 +1,6 @@
 package fis_training.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import fis_training.core.CaseStatus;
 import fis_training.core.CaseType;
 import lombok.*;
@@ -9,13 +8,15 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-@Data
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "criminal_case")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class CriminalCase extends  AbstractEntity{
     @Column(name = "number")
     private String number;
@@ -34,7 +35,8 @@ public class CriminalCase extends  AbstractEntity{
     @OneToMany(mappedBy = "criminalCase", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonManagedReference
+//    @JsonManagedReference
+//    @JsonIdentityReference(alwaysAsId = true)
     @Transient
     private Set<Evidence> evidenceSet = new HashSet<>();
     @OneToOne
@@ -45,7 +47,9 @@ public class CriminalCase extends  AbstractEntity{
             inverseJoinColumns = @JoinColumn(name = "Detective_id"))
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonManagedReference
+    @JsonManagedReference(value = "criminalCase-detective")
+//    @JsonIdentityReference(alwaysAsId = true)
+    @Transient
     private Set<Detective> assigned = new HashSet<>();
 
     public CriminalCase() {

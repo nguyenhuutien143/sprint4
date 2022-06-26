@@ -52,4 +52,37 @@ public class CriminalCaseServiceImpl implements CriminalCaseService {
                 filter(c->type.equals(c.getType())).collect(Collectors.toList());
         return criminalCaseList;
     }
+
+    @Override
+    public void save(CriminalCase criminalCase) {
+        criminalCaseRepo.save(criminalCase);
+    }
+
+    @Override
+    public void delete(CriminalCase criminalCase) {
+        criminalCaseRepo.delete(criminalCase);
+    }
+
+    @Override
+    public CriminalCase update(CriminalCase criminalCase) {
+        criminalCaseRepo.save(criminalCase);
+        return criminalCase;
+    }
+
+    @Override
+    public int deleteById(Long criminalCaseId) {
+        criminalCaseRepo.deleteById(criminalCaseId);
+        if(criminalCaseRepo.findById(criminalCaseId).isPresent()) return -1;
+        return 1;
+    }
+
+    @Override
+    public Optional<CriminalCase> findById(Long criminalCaseId) {
+        return criminalCaseRepo.findById(criminalCaseId);
+    }
+
+    @Override
+    public List<CriminalCase> findAll() {
+        return criminalCaseRepo.findAll();
+    }
 }
