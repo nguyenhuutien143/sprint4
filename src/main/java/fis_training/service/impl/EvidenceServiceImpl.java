@@ -5,7 +5,7 @@ import fis_training.core.NotFoundException;
 import fis_training.model.CriminalCase;
 import fis_training.model.Evidence;
 import fis_training.model.Storage;
-import fis_training.repo.jpa.EvidenceRepo;
+import fis_training.repo.EvidenceRepo;
 import fis_training.service.EvidenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

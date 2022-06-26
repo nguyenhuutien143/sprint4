@@ -1,7 +1,11 @@
 package fis_training.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import fis_training.core.EmploymentStatus;
 import fis_training.core.Rank;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -16,7 +20,7 @@ public class Detective extends AbstractEntity {
     private Person person;
     @Column(name = "badgeNumber", unique = true)
     private String badgeNumber;
-    @Column(name = "`rank`")
+    @Column(name = "detectiveRank")
     @Enumerated(EnumType.STRING)
     private Rank rank;
     @Column(name = "armed")
@@ -24,9 +28,14 @@ public class Detective extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private EmploymentStatus status;
     @ManyToMany(mappedBy = "assigned")
-    @Transient
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonBackReference
     private Set<CriminalCase> criminalCaseSet;
-    @OneToMany(mappedBy = "detective")
+    @OneToMany(mappedBy = "detective", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @Transient
     private Set<TrackEntry> trackEntrySet;
 

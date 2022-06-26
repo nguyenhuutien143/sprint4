@@ -6,7 +6,7 @@ import fis_training.core.CaseType;
 import fis_training.core.NotFoundException;
 import fis_training.model.CriminalCase;
 import fis_training.model.Detective;
-import fis_training.repo.jpa.CriminalCaseRepo;
+import fis_training.repo.CriminalCaseRepo;
 import fis_training.service.CriminalCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,11 @@ import java.util.stream.Collectors;
 @Service
 
 public class CriminalCaseServiceImpl implements CriminalCaseService {
-
-    private final CriminalCaseRepo criminalCaseRepo;
     @Autowired
-    public CriminalCaseServiceImpl(CriminalCaseRepo criminalCaseRepo) {
-        this.criminalCaseRepo = criminalCaseRepo;
-    }
+
+    private  CriminalCaseRepo criminalCaseRepo;
+
+
 
     @Override
     public List<CriminalCase> findByLeadInvestigator(Detective detective) {

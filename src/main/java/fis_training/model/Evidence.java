@@ -1,5 +1,10 @@
 package fis_training.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -10,9 +15,15 @@ import java.util.Set;
 public class Evidence extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name="case_id", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonBackReference
     private CriminalCase criminalCase;
     @ManyToOne
     @JoinColumn(name = "storage_id", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonBackReference
     private Storage storage;
     @Column(name = "number", unique = true)
     private String number;
@@ -22,7 +33,10 @@ public class Evidence extends AbstractEntity {
     private String notes;
     @Column(name = "archived")
     private boolean archived;
-    @OneToMany(mappedBy = "evidence")
+    @OneToMany(mappedBy = "evidence", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<TrackEntry> trackEntries = new HashSet<>();
 
     public CriminalCase getCriminalCase() {

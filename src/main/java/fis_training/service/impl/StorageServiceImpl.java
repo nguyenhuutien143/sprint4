@@ -3,7 +3,7 @@ package fis_training.service.impl;
 
 import fis_training.core.NotFoundException;
 import fis_training.model.Storage;
-import fis_training.repo.jpa.StorageRepo;
+import fis_training.repo.StorageRepo;
 import fis_training.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -27,10 +27,11 @@ SOFTWARE.
 */
 package fis_training.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 @Entity
@@ -41,7 +42,11 @@ public class Storage extends AbstractEntity {
 @Column(name = "location")
     private String location;
 
-    @OneToMany(mappedBy = "storage")
+    @OneToMany(mappedBy = "storage",cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonManagedReference
+    @Transient
     private Set<Evidence> evidenceSet = new HashSet<>();
 
     public Storage() {

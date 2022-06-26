@@ -1,13 +1,19 @@
 package fis_training.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import fis_training.core.CaseStatus;
 import fis_training.core.CaseType;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "criminal_case")
 public class CriminalCase extends  AbstractEntity{
@@ -25,17 +31,21 @@ public class CriminalCase extends  AbstractEntity{
     //very big text
     @Column(name = "notes")
     private String notes;
-    @OneToMany(mappedBy = "criminalCase" )
+    @OneToMany(mappedBy = "criminalCase", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonManagedReference
     @Transient
     private Set<Evidence> evidenceSet = new HashSet<>();
     @OneToOne
     @JoinColumn(name="LeadInvestigator", nullable = false)
     private Detective leadInvestigator;
     @ManyToMany
-    @JoinTable(name = "case_detective")
-    @Transient
+    @JoinTable(name = "working_detective_case", joinColumns = @JoinColumn(name = "criminalCase_id"),
+            inverseJoinColumns = @JoinColumn(name = "Detective_id"))
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonManagedReference
     private Set<Detective> assigned = new HashSet<>();
 
     public CriminalCase() {

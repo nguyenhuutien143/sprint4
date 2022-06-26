@@ -2,7 +2,10 @@ package fis_training.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import fis_training.core.TrackAction;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,9 +18,15 @@ public class TrackEntry extends AbstractEntity{
     private LocalDateTime date;
     @ManyToOne
     @JoinColumn(name = "evidence_id", nullable = false)
+    @JsonBackReference
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Evidence evidence;
     @ManyToOne
     @JoinColumn(name = "detective_id", nullable = false)
+    @JsonBackReference
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Detective detective;
     @Enumerated(EnumType.STRING)
     private TrackAction trackAction;

@@ -3,7 +3,7 @@ package fis_training.service.impl;
 
 import fis_training.core.NotFoundException;
 import fis_training.model.Person;
-import fis_training.repo.jpa.PersonRepo;
+import fis_training.repo.PersonRepo;
 import fis_training.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

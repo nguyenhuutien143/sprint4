@@ -3,7 +3,7 @@ package fis_training.service.impl;
 
 import fis_training.core.TrackAction;
 import fis_training.model.TrackEntry;
-import fis_training.repo.jpa.TrackEntryRepo;
+import fis_training.repo.TrackEntryRepo;
 import fis_training.service.TrackEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
