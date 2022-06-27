@@ -4,7 +4,9 @@ import fis_training.core.CaseStatus;
 import fis_training.core.CaseType;
 import fis_training.dto.CriminalCaseDTO;
 import fis_training.model.CriminalCase;
+import fis_training.model.Detective;
 import fis_training.service.CriminalCaseService;
+import fis_training.service.DetectiveService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,11 +24,13 @@ public class CriminalCaseController {
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
-    private CriminalCaseService criminalCaseService;
+    private final CriminalCaseService criminalCaseService;
+    private final DetectiveService detectiveService;
 
-    public CriminalCaseController(ModelMapper modelMapper, CriminalCaseService criminalCaseService) {
+    public CriminalCaseController(ModelMapper modelMapper, CriminalCaseService criminalCaseService,DetectiveService detectiveService) {
         this.modelMapper = modelMapper;
         this.criminalCaseService = criminalCaseService;
+        this.detectiveService= detectiveService;
     }
 
     @PostMapping("/")
@@ -64,5 +68,11 @@ public class CriminalCaseController {
         return criminalCaseService.findByType(CaseType.valueOf(caseType)).stream()
                 .map(criminalCase -> modelMapper.map(criminalCase, CriminalCaseDTO.class))
                 .collect(Collectors.toList());
+    }
+    @GetMapping("/userName/{userName}")
+    public List<CriminalCaseDTO> getCriminalCasesByDetectiveUserName(@PathVariable("userName") String userName) {
+        Detective detective= detectiveService.findByUserName(userName);
+        return criminalCaseService.findByLeadInvestigator(detective).stream()
+                .map(criminalCase -> modelMapper.map(criminalCase, CriminalCaseDTO.class)).collect(Collectors.toList());
     }
 }

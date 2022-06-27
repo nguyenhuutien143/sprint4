@@ -62,4 +62,10 @@ public class DetectiveServiceImpl implements DetectiveService {
                 filter(detective->rank.equals(detective.getRank())).collect(Collectors.toList());
         return detectiveList;
     }
+
+    @Override
+    public Detective findByUserName(String userName) {
+        return detectiveRepo.findAll().stream().filter(d-> userName.equals(d.getPerson().getUsername())).
+                findFirst().get();
+    }
 }

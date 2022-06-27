@@ -18,5 +18,5 @@ public interface DetectiveService {
     void delete(Long id);
     Optional<Detective> findByBadgeNumber(String badgeNumber);
     List<Detective> findbyRank(Rank rank);
-
+    Detective findByUserName(String userName);
 }
