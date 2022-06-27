@@ -1,6 +1,5 @@
 package fis_training.service.impl;
 
-
 import fis_training.core.CaseStatus;
 import fis_training.core.CaseType;
 import fis_training.core.NotFoundException;
@@ -11,18 +10,45 @@ import fis_training.service.CriminalCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-
 public class CriminalCaseServiceImpl implements CriminalCaseService {
+
     @Autowired
+    CriminalCaseRepo criminalCaseRepo;
 
-    private  CriminalCaseRepo criminalCaseRepo;
 
+    @Override
+    public CriminalCase save(CriminalCase criminalCase) {
+        return this.criminalCaseRepo.save(criminalCase);
+    }
 
+    @Override
+    public CriminalCase update(CriminalCase criminalCase) {
+        return this.criminalCaseRepo.save(criminalCase);
+    }
+
+    @Override
+    public List<CriminalCase> getAll() {
+        return this.criminalCaseRepo.findAll();
+    }
+
+    @Override
+    public CriminalCase getCriminalCase(Long id) {
+        return this.criminalCaseRepo.findById(id).get();
+    }
+
+    @Override
+    public void delete(Long id) {
+        CriminalCase criminalCase = new CriminalCase();
+        criminalCase.setId(id);
+        this.criminalCaseRepo.delete(criminalCase);
+    }
 
     @Override
     public List<CriminalCase> findByLeadInvestigator(Detective detective) {
@@ -34,7 +60,7 @@ public class CriminalCaseServiceImpl implements CriminalCaseService {
     @Override
     public Optional<CriminalCase> findByNumber(String caseNumber) {
         Optional<CriminalCase> criminalCase= criminalCaseRepo.findAll().stream().
-                                                                        filter(c->caseNumber.equals(c.getNumber())).findFirst();
+                filter(c->caseNumber.equals(c.getNumber())).findFirst();
         if(criminalCase.isPresent()) return criminalCase;
         throw new NotFoundException("not found");
     }
@@ -51,38 +77,5 @@ public class CriminalCaseServiceImpl implements CriminalCaseService {
         List<CriminalCase> criminalCaseList= criminalCaseRepo.findAll().stream().
                 filter(c->type.equals(c.getType())).collect(Collectors.toList());
         return criminalCaseList;
-    }
-
-    @Override
-    public void save(CriminalCase criminalCase) {
-        criminalCaseRepo.save(criminalCase);
-    }
-
-    @Override
-    public void delete(CriminalCase criminalCase) {
-        criminalCaseRepo.delete(criminalCase);
-    }
-
-    @Override
-    public CriminalCase update(CriminalCase criminalCase) {
-        criminalCaseRepo.save(criminalCase);
-        return criminalCase;
-    }
-
-    @Override
-    public int deleteById(Long criminalCaseId) {
-        criminalCaseRepo.deleteById(criminalCaseId);
-        if(criminalCaseRepo.findById(criminalCaseId).isPresent()) return -1;
-        return 1;
-    }
-
-    @Override
-    public Optional<CriminalCase> findById(Long criminalCaseId) {
-        return criminalCaseRepo.findById(criminalCaseId);
-    }
-
-    @Override
-    public List<CriminalCase> findAll() {
-        return criminalCaseRepo.findAll();
     }
 }

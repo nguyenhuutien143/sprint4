@@ -7,13 +7,13 @@ public enum Rank {
     INSPECTOR(4),
     CHIEF_INSPECTOR(5);
 
-    private int code;
+    private final int value;
 
-    Rank(int code) {
-        this.code = code;
+    Rank(int value) {
+        this.value = value;
     }
 
-    public int getCode() {
-        return code;
+    public int getValue() {
+        return value;
     }
 }

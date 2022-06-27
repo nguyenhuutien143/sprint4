@@ -1,5 +1,6 @@
 package fis_training.service.impl;
 
+
 import fis_training.core.NotFoundException;
 import fis_training.core.Rank;
 import fis_training.model.Detective;
@@ -8,46 +9,43 @@ import fis_training.service.DetectiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class DetectiveserviceImpl implements DetectiveService {
+public class DetectiveServiceImpl implements DetectiveService {
     @Autowired
-    private DetectiveRepo detectiveRepo;
+    DetectiveRepo detectiveRepo;
+
 
     @Override
-    public void save(Detective detective) {
-        detectiveRepo.save(detective);
-    }
-
-    @Override
-    public void delete(Detective detective) {
-        detectiveRepo.delete(detective);
+    public Detective save(Detective detective) {
+        return this.detectiveRepo.save(detective);
     }
 
     @Override
     public Detective update(Detective detective) {
-        detectiveRepo.save(detective);
-        return detective;
+        return this.detectiveRepo.save(detective);
     }
 
     @Override
-    public int deleteById(Long detectiveId) {
-        detectiveRepo.deleteById(detectiveId);
-        if(detectiveRepo.findById(detectiveId).isPresent()) return -1;
-        return 1;
+    public List<Detective> getAll() {
+        return this.detectiveRepo.findAll();
     }
 
     @Override
-    public Optional<Detective> findById(Long detectiveId) {
-        return detectiveRepo.findById(detectiveId);
+    public Detective findById(Long id) {
+        return this.detectiveRepo.findById(id).get();
     }
 
     @Override
-    public List<Detective> findAll() {
-        return detectiveRepo.findAll();
+    public void delete(Long id) {
+        Detective detective = new Detective();
+        detective.setId(id);
+        this.detectiveRepo.delete(detective);
     }
 
     @Override
@@ -55,7 +53,7 @@ public class DetectiveserviceImpl implements DetectiveService {
         Optional<Detective> detective= detectiveRepo.findAll().stream().
                 filter(d->badgeNumber.equals(d.getBadgeNumber())).findFirst();
         if(detective.isPresent()) return detective;
-         throw new NotFoundException("not found detective with this badge number");
+        throw new NotFoundException("not found detective with this badge number");
     }
 
     @Override

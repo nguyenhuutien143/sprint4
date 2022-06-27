@@ -1,10 +1,10 @@
 package fis_training.model;
 
 
+import lombok.Data;
 
-import fis_training.core.DateProcessor;
-
-import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
@@ -12,21 +12,15 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @MappedSuperclass
+@Data
 public abstract class AbstractEntity implements Serializable {
     @Id
-    @Column(name = "")
-    protected Long id;
-    @Column(name = "version")
-    protected int version;
-    @Column(name = "createdAt")
-    protected LocalDateTime createdAt;
-    @Column(name = "modifiedAt")
-    protected LocalDateTime modifiedAt;
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    private Long id;
 
-    protected AbstractEntity() {
-        createdAt = LocalDateTime.now();
-        modifiedAt = LocalDateTime.now();
-    }
+    private Integer version;
+    private LocalDateTime createAt;
+    private LocalDateTime modifiedAt;
 
     public Long getId() {
         return id;
@@ -36,12 +30,20 @@ public abstract class AbstractEntity implements Serializable {
         this.id = id;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public Integer getVersion() {
+        return version;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
     }
 
     public LocalDateTime getModifiedAt() {
@@ -52,25 +54,32 @@ public abstract class AbstractEntity implements Serializable {
         this.modifiedAt = modifiedAt;
     }
 
-    // IDE generated methods
+    public AbstractEntity() {
+
+    }
+
+    public AbstractEntity(Long id, Integer version, LocalDateTime createAt, LocalDateTime modifiedAt) {
+        this.id = id;
+        this.version = version;
+        this.createAt = createAt;
+        this.modifiedAt = modifiedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         AbstractEntity that = (AbstractEntity) o;
-        if (!Objects.equals(id, that.id)) return false;
-        return true;
+        if (!id.equals(that.id)) return false;
+        return Objects.equals(createAt, that.createAt);
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("AbstractEntity[id='%d%n', createdAt='%s', modifiedAt='%s', version='%d%n']",
-                id, DateProcessor.toString(createdAt), DateProcessor.toString(modifiedAt), version);
+        int result = id.hashCode();
+        result = 31 * result + (version != null ? version.hashCode() : 0);
+        result = 31 * result + (createAt != null ? createAt.hashCode() : 0);
+        result = 31 * result + (modifiedAt != null ? modifiedAt.hashCode() : 0);
+        return result;
     }
 }

@@ -1,14 +1,18 @@
 package fis_training.service;
 
-
-
 import fis_training.model.Storage;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.Set;
 
 public interface StorageService {
-    Optional<Storage> findByName(String name);
+    Storage save(Storage storage);
 
-    Optional<Storage> findByLocation(String location);
+    Storage update(Storage storage);
+
+    List<Storage> getAll();
+
+    Storage findById(Long id);
+
+    void delete(Long id);
 }
-

@@ -1,49 +1,21 @@
 package fis_training.service;
 
-
-
 import fis_training.model.Person;
+import fis_training.model.role.UserRole;
 
 import java.util.List;
-import java.util.Optional;
-
+import java.util.Set;
 
 public interface PersonService {
-    Optional<Person> findByUsername(String username);
+    Person createUser(Person user, Set<UserRole> userRoles) throws Exception;
 
-     List<Person> findAllByUsernamePart(String part);
+    Person addPerson(Person person);
 
-    Optional<Person> findByCompleteName(String firstName, String lastName);
+    Person updatePerson(Person person);
 
-    List<Person> findAll();
+    List<Person> getPeople();
 
-    int updatePassword(Long personId, String newPass);
+    Person getPerson(Long id);
 
-    long count();
-
-//     Map<String, Object> findByIdAsMap(Long id) {
-//        return new HashMap<>();
-//    }
-//
-//    default List<Map<String, Object>> findAllAsMaps() {
-//        return new ArrayList<>();
-//    }
-
-//    default void htmlAllByName(String name) {}
-
-     int createPerson(Long userId, String username, String firstName, String lastName, String password);
-
-//     List<String> findAllUsernames();
-
-//    default List<Person> findAllByLastName(String firstName){return List.of();};
-
-
-
-//    @Autowired
-//    private PersonRepo jdbcPersonRepo;
-//
-//    public void testPersonRepo(){
-//        Set<Person> personSet = jdbcPersonRepo.findAll();
-//        System.out.println(personSet);
-//    }
+    void deletePerson(Long id);
 }

@@ -1,30 +1,43 @@
 package fis_training.service.impl;
-
-
-import fis_training.core.NotFoundException;
 import fis_training.model.Storage;
 import fis_training.repo.StorageRepo;
 import fis_training.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-@Service
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+@Service
 public class StorageServiceImpl implements StorageService {
     @Autowired
-    private StorageRepo storageRepo;
+    StorageRepo storageRepository;
+
     @Override
-    public Optional<Storage> findByName(String name) {
-        Optional<Storage> storage= storageRepo.findAll().stream().filter(s-> name.equals(s.getName())).findFirst();
-        if(storage.isPresent()) return storage;
-        throw new NotFoundException("not found");
+    public Storage save(Storage storage) {
+        return this.storageRepository.save(storage);
     }
 
     @Override
-    public Optional<Storage> findByLocation(String location) {
-        Optional<Storage> storage= storageRepo.findAll().stream().filter(s-> location.equals(s.getLocation())).findFirst();
-        if(storage.isPresent()) return storage;
-        throw new NotFoundException("not found");
+    public Storage update(Storage storage) {
+        return this.storageRepository.save(storage);
+    }
+
+    @Override
+    public List<Storage> getAll() {
+        return this.storageRepository.findAll();
+    }
+
+    @Override
+    public Storage findById(Long id) {
+        return this.storageRepository.findById(id).get();
+    }
+
+    @Override
+    public void delete(Long id) {
+        Storage storage = new Storage();
+        storage.setId(id);
+        this.storageRepository.delete(storage);
     }
 }

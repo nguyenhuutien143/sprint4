@@ -1,95 +1,69 @@
 package fis_training.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import fis_training.model.role.UserRole;
+import fis_training.core.DateFormatter;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.*;
+
 @Entity
-@Table(name = "person")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
-public class Person extends AbstractEntity {
-    @Column(name = "username")
+@Data
+public class Person extends AbstractEntity implements UserDetails {
     private String username;
-    @Column(name = "firstName")
     private String firstName;
-    @Column(name = "lastName")
     private String lastName;
-    @Column(name = "password")
     private String password;
-    @Column(name = "hiringDate")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormatter.DATE_FORMAT)
+    @DateTimeFormat(pattern = DateFormatter.DATE_FORMAT)
+    @Column(nullable = false)
     private LocalDateTime hiringDate;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "person")
+    private List<UserRole> userRoles = new ArrayList<>();
 
-    public Person() {
-        super();
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
+    public Person(String username, String firstName, String lastName, String password, LocalDateTime hiringDate) {
         this.username = username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
-    }
-
-    public LocalDateTime getHiringDate() {
-        return hiringDate;
-    }
-
-    public void setHiringDate(LocalDateTime hiringDate) {
         this.hiringDate = hiringDate;
     }
 
+    public Person() {
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Person person = (Person) o;
-        return Objects.equals(firstName, person.firstName) &&
-                Objects.equals(lastName, person.lastName) &&
-                Objects.equals(hiringDate.toLocalDate(), person.hiringDate.toLocalDate());
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), firstName, lastName, hiringDate.toLocalDate());
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<Authority> set = new ArrayList<>();
+        this.userRoles.forEach(userRole -> {
+            set.add(new Authority(userRole.getRole().getRoleName()));
+        });
+        return set;
     }
 
     @Override
-    public String toString() {
-        return String.format("Person[username='%s', firstName='%s', lastName='%s', hiringDate='%s']\n",
-                username, firstName, lastName, hiringDate == null? "" : hiringDate.toString());
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

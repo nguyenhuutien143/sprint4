@@ -6,13 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class Sprint3Application {
+public class Sprint4Application {
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
 	public static void main(String[] args) {
-		SpringApplication.run(Sprint3Application.class, args);
+		SpringApplication.run(Sprint4Application.class, args);
 	}
 
 }
